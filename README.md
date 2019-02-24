@@ -3,7 +3,7 @@ STATS 415
 
 
 questions: 
-https://dlu-umich.github.io/friday-workshop/competitions/iaqf/IAQFCompetitionProblem2017.pdf
+https://www.iaqf.org/dev/files/IAQF%20Competition%20Problem%202017.pdf
 
 papers: 
 
