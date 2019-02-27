@@ -11,7 +11,6 @@ papers:
 
 https://www.iaqf.org/news/news_detail/49
 
-$e_2$
 
 
 415 contents: 
