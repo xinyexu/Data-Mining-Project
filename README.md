@@ -1,7 +1,7 @@
 # Machine-Learning-Project
 STATS 415
 
-Xinye Xu (GSI: Eli)
+Shengqian Jin (GSI: ); Hao Xu (GSI: ); Xinye Xu (GSI: Eli)
 
 
 questions: 
