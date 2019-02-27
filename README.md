@@ -2,6 +2,7 @@
 STATS 415
 
 
+、
 questions: 
 https://www.iaqf.org/dev/files/IAQF%20Competition%20Problem%202017.pdf
 
