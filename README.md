@@ -2,7 +2,7 @@
 STATS 415
 
 
-、
+
 questions: 
 https://www.iaqf.org/dev/files/IAQF%20Competition%20Problem%202017.pdf
 
@@ -14,6 +14,21 @@ https://www.iaqf.org/news/news_detail/49
 
 
 415 contents: 
+
+regression and linear regression
+
+K nearest neighbors
+
+Linear and Quadratic Discriminant Analysis
+
+Logistic regression
+
+resampling methods (cross-validation and bootstrap)
+
+Model Selection
+
+
+----- upcoming
 
 Splines
 
