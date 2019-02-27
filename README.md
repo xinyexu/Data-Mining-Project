@@ -3,6 +3,7 @@ STATS 415
 
 Shengqian Jin (GSI: ); Hao Xu (GSI: ); Xinye Xu (GSI: Eli)
 
+Data Source: Federal Reserve Economic Data
 
 questions: 
 https://www.iaqf.org/dev/files/IAQF%20Competition%20Problem%202017.pdf
