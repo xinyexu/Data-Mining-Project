@@ -17,6 +17,11 @@ Report Edit:
 
 https://www.overleaf.com/1479489434yjxvtpxhnkmf
 
+Agenda: 
+3/1
+3/2
+3/3
+3/4
 
 Problems: 
 We want to test whether several related factors can predict the movement direction of bond market (AAA bond) and stock market (S&P500) in US. These features include Fed interest rate, VIX index, Exchange rate of US with China and EU, Emerging bond index. 
