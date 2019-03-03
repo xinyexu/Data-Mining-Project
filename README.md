@@ -27,7 +27,8 @@ Agenda:
 
 3/4
 
-Problems: 
+Idea:
+
 We want to test whether several related factors can predict the movement direction of bond market (AAA bond) and stock market (S&P500) in US. These features include Fed interest rate, VIX index, Exchange rate of US with China and EU, Emerging bond index. 
 Both supervised and Unsupervised techniques, such as KNN, Linear and Quadratic Discriminant Analysis, Bayesian regression addictive tree. Also, the more advanced models, such as Long Short Term Memory networks (LSTM) might be used as the benchmarket to compare the performance.  Lastly, we will apply Model Selection methodologeis to compare the performance of differed model and discuss futuere improvement. 
 
