@@ -19,13 +19,17 @@ https://www.overleaf.com/1479489434yjxvtpxhnkmf
 
 Agenda: 
 
-3/1
+3/4 or Spring Break: 
 
-3/2
+Shengqian Jin: time series cross-validation, dimensional reduction (PCA), Model Selection, 
 
-3/3
+Hao Xu: K nearest neighbors; Linear and Quadratic Discriminant Analysis; Logistic regression, similar to HW framework
 
-3/4
+Xinye Xu: Trees (Bayesian regression addictive tree), LSTM, 
+
+
+
+
 
 Idea:
 
