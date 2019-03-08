@@ -1,4 +1,4 @@
-# Machine-Learning-Project
+# Data-Mining-Project
 STATS 415
 
 Shengqian Jin (GSI: ); Hao Xu (GSI: ); Xinye Xu (GSI: Eli)
