@@ -8,21 +8,6 @@ Shengqian Jin; Hao Xu; Xinye Xu
 
 
 
-Data Source: Federal Reserve Economic Data
-
-questions: 
-https://www.iaqf.org/dev/files/IAQF%20Competition%20Problem%202017.pdf
-
-papers: 
-
-https://www.iaqf.org/news/news_detail/49
-
-
-Report Edit:
-
-https://www.overleaf.com/1479489434yjxvtpxhnkmf
-
-
 ### Agenda: 
 
 3/23 or Spring Break: 
@@ -75,3 +60,18 @@ Introduction to Clustering
 Hierarchical clustering
 
 K-means
+
+
+Data Source: Federal Reserve Economic Data
+
+questions: 
+https://www.iaqf.org/dev/files/IAQF%20Competition%20Problem%202017.pdf
+
+papers: 
+
+https://www.iaqf.org/news/news_detail/49
+
+
+Report Edit:
+
+https://www.overleaf.com/1479489434yjxvtpxhnkmf
