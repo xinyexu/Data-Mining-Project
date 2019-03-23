@@ -1,7 +1,7 @@
 # Data-Mining-Project
 STATS 415
 
-Shengqian Jin (GSI: ); Hao Xu (GSI: ); Xinye Xu (GSI: Eli)
+Shengqian Jin; Hao Xu; Xinye Xu
 
 Data Source: Federal Reserve Economic Data
 
