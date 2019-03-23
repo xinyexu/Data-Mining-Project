@@ -24,6 +24,9 @@ ICE BofAML BB Emerging Markets Corporate Plus Sub-Index Total Return Index Value
 
 ICE BofAML US High Yield Master II Total Return Index Value (BAMLHYH0A0HYM2TRIV)	
 
+Wilshire 5000 Total Market Full Cap Index (WILL5000INDFC)	
+ 
+
 ### Agenda: 
 
 3/23 or Spring Break: 
