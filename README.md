@@ -3,6 +3,11 @@ STATS 415
 
 Shengqian Jin; Hao Xu; Xinye Xu
 
+### Procedures:
+1. Data exploration ACF Plots - Absolute Values (STATS 509)
+
+
+
 Data Source: Federal Reserve Economic Data
 
 questions: 
@@ -17,17 +22,16 @@ Report Edit:
 
 https://www.overleaf.com/1479489434yjxvtpxhnkmf
 
+
 ### Agenda: 
 
-3/4 or Spring Break: 
+3/23 or Spring Break: 
 
 Shengqian Jin: time series cross-validation, dimensional reduction (PCA), Model Selection, 
 
 Hao Xu: summary statistics, K nearest neighbors; Linear and Quadratic Discriminant Analysis; Logistic regression, similar to HW framework
 
 Xinye Xu: Trees (Bayesian regression addictive tree), (K-means),  LSTM, 
-
-
 
 
 
