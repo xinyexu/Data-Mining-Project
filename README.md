@@ -23,7 +23,7 @@ https://www.overleaf.com/1479489434yjxvtpxhnkmf
 
 Shengqian Jin: time series cross-validation, dimensional reduction (PCA), Model Selection, 
 
-Hao Xu: K nearest neighbors; Linear and Quadratic Discriminant Analysis; Logistic regression, similar to HW framework
+Hao Xu: summary statistics, K nearest neighbors; Linear and Quadratic Discriminant Analysis; Logistic regression, similar to HW framework
 
 Xinye Xu: Trees (Bayesian regression addictive tree), (K-means),  LSTM, 
 
