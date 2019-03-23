@@ -8,7 +8,15 @@ Shengqian Jin; Hao Xu; Xinye Xu
 
 2. How to deal with NA values (replace with historical value/ drop)
 
+### New Data
 
+CBOE Crude Oil ETF Volatility Index: OVXCLS
+Crude Oil Prices: West Texas Intermediate (WTI) - Cushing, Oklahoma (DCOILWTICO)	
+ICE BofAML US Corp AAA Total Return Index Value (BAMLCC0A1AAATRIV)
+Dow Jones Industrial Average (DJIA)
+NASDAQ Composite Index (NASDAQCOM)
+ICE BofAML BB Emerging Markets Corporate Plus Sub-Index Total Return Index Value (BAMLEM3BRRBBCRPITRIV)
+ICE BofAML US High Yield Master II Total Return Index Value (BAMLHYH0A0HYM2TRIV)	
 
 ### Agenda: 
 
