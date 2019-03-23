@@ -6,6 +6,8 @@ Shengqian Jin; Hao Xu; Xinye Xu
 ### Procedures:
 1. Data exploration ACF Plots - Absolute Values (STATS 509)
 
+2. How to deal with NA values (replace with historical value/ drop)
+
 
 
 ### Agenda: 
