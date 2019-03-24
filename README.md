@@ -46,40 +46,62 @@ We want to test whether past related asserets price can predict the movement dir
 Both supervised and Unsupervised techniques, such as KNN, Linear and Quadratic Discriminant Analysis, Bayesian regression addictive tree. Also, the more advanced models, such as Long Short Term Memory networks (LSTM) might be used as the benchmarket to compare the performance.  Lastly, we will apply Model Selection methodologeis to compare the performance of differed model and discuss futuere improvement. 
 
 
-### 415 contents: 
+### Writting Syllabus for STATS 415 Project: 
+1. Preliminary
 
-regression and linear regression
+  (1) Data Exploration 
 
-K nearest neighbors
+   (i) Visualization
+   
+   - Correlation (Graphical Correlation Matrix)
+      
+   - Boxplot: each X vs. Y (only most correlated X's)
+       
+   - Scatterplot: pairwise X vs. Y (ditto)
+       
+   (ii) Issues (try to find as many as possible features):
+   
+   - Which are most correlated?
+       
+   - Which exist classification trend?
+       
+   - Others
+       
+  (2) Split Data Set into Training and Test Data
 
-Linear and Quadratic Discriminant Analysis
-
-Logistic regression
-
-resampling methods (cross-validation and bootstrap)
-
-Model Selection
+   Issues need to claim: claim the features for time series data splittig.
 
 
------ upcoming
+2. Supervised Classification
 
-Splines
+Note: We are planning to use LDA, QDA, Logistic, and KNN. Therefore only use AIC, BIC, PCR, and PLS as dimension reduction methods, since: (i) forward/backward - need p-values (parametric), LDA, QDA, and KNN are non-parametric; (ii) rigde and lasso are not used in classification problems (and need beta's to be shrunk).
 
-Generalized Additive Models (GAMs)
+(1) Subset Selection Methods (AIC/BIC)
 
-Trees
+For each method of LDA, QDA, logit, and KNN, use AIC/BIC find the best one (with minimal AIC/BIC); reconstruct the final model then calculate the corresponding training and test errors.
 
-Ensemble methods
+(2) Dimension Reduction Methods (PCR/PLS)
 
-Support Vector Machines
+   (i) Dimension Reduction
+   
+   PCR/PLS applied
+       
+   (ii) New X's
+   
+   Use Z's (projected from X's) then apply LDA, QDA, logit, and KNN; find corresponding errors.
+       
+(3) Best Model
 
-Unsupervised Methods
+Only compare training and test errors; claim clearly that cross-validation is not proper for time series data.
 
-Introduction to Clustering
+3. Clustering (Unsupervised Methods)
 
-Hierarchical clustering
+   (*TBD*)
+   
+4. Limitations and Conclusion
 
-K-means
+   (*TBD*)
+
 
 
 Data Source: Federal Reserve Economic Data
