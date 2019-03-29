@@ -1,7 +1,7 @@
 # Data-Mining-Project
 STATS 415
 
-Shengqian Jin; Hao Xu; Xinye Xu
+Shengqian Jin (003); Hao Xu(003); Xinye Xu(002)
 
 ### Procedures:
 1. Data exploration ACF Plots - Absolute Values (STATS 509)
