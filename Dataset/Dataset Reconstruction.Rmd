@@ -1,0 +1,22 @@
+---
+title: "Dataset Reconstruction"
+output: pdf_document
+---
+
+```{r}
+df <- read.csv('https://raw.githubusercontent.com/xinyexu/Data-Mining-Project/master/Dataset/Data.Ori.csv')
+
+
+# Calculate Returns
+df_return <- na.omit(df)
+df_return[, 2:16] <- as.data.frame(apply(na.omit(df[, 2:16]), 2, 
+                                         function(x) {c(NaN, diff(x)/x[-length(x)])})) 
+
+# Reconstruct Dataset 
+df_return$SP500Direction <- as.numeric(df_return$SP500 > 0) 
+df_return$USBondDirection <- as.numeric(df_return$BAMLCC0A1AAATRIV > 0)
+colnames(df_return) = c('Date', 'Treasury', 'USBondAAA', 'SP500', 'CHNUS', 'VixIndex', 
+                        'EMBond', 'EURUS', 'USBondHY', 'OilWTI', 'VixOil', 'DJIA', 'NASDAQ', 
+                        'EMBondBB', 'MarketCap', 'Vixgold', 'SP500Dir', 'USBondAAADir')
+write.csv(df_return, file = "Data.Returns.csv", row.names = FALSE)
+```
