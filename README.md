@@ -103,6 +103,9 @@ Only compare training and test errors; claim clearly that cross-validation is no
    (*TBD*)
 
 
+**Solution to new dataset: http://fastml.com/predicting-wine-quality/**
+
+
 
 Data Source: Federal Reserve Economic Data
 
