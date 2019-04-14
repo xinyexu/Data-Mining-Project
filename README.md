@@ -14,19 +14,6 @@ The data is related with direct marketing campaigns of a Portuguese banking inst
 Banking & Marketing: 
 http://archive.ics.uci.edu/ml/datasets/Bank+Marketing
 
-
-### Agenda: 
-
-3/23 or Spring Break: 
-
-Shengqian Jin: time series cross-validation, dimensional reduction (PCA), Model Selection, 
-
-Hao Xu: summary statistics, K nearest neighbors; Linear and Quadratic Discriminant Analysis; Logistic regression, similar to HW framework
-
-Xinye Xu: summary visualization, Trees (Bayesian regression addictive tree), (K-means),  LSTM, 
-
-
-
 ### Idea:
 
 We want to test whether past related asserets price can predict the movement direction of bond market (AAA bond) and stock market (S&P500) in US of future dates. These features include Fed interest rate, VIX index, Exchange rate of US with China and EU, Emerging bond index. 
