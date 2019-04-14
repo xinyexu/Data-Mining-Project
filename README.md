@@ -9,6 +9,8 @@ Shengqian Jin (003); Hao Xu(003); Xinye Xu(002)
 2. How to deal with NA values (replace with historical value/ drop)
 
 ### New Data
+The data is related with direct marketing campaigns of a Portuguese banking institution. The marketing campaigns were based on phone calls. Often, more than one contact to the same client was required, in order to access if the product (bank term deposit) would be ('yes') or not ('no') subscribed.
+
 Banking & Marketing: 
 http://archive.ics.uci.edu/ml/datasets/Bank+Marketing
 
