@@ -16,8 +16,7 @@ http://archive.ics.uci.edu/ml/datasets/Bank+Marketing
 
 ### Idea:
 
-We want to test whether past related asserets price can predict the movement direction of bond market (AAA bond) and stock market (S&P500) in US of future dates. These features include Fed interest rate, VIX index, Exchange rate of US with China and EU, Emerging bond index. 
-Both supervised and Unsupervised techniques, such as KNN, Linear and Quadratic Discriminant Analysis, Bayesian regression addictive tree. Also, the more advanced models, such as Long Short Term Memory networks (LSTM) might be used as the benchmarket to compare the performance.  Lastly, we will apply Model Selection methodologeis to compare the performance of differed model and discuss futuere improvement. 
+Propose data mining approaches to predict the success of telemarketing calls for selling bank long-term deposits.
 
 
 ### Writting Syllabus for STATS 415 Project: 
@@ -79,20 +78,11 @@ Only compare training and test errors; claim clearly that cross-validation is no
 
 **Solution to new dataset: http://fastml.com/predicting-wine-quality/**
 
+Relevant Papers:
+
+S. Moro, P. Cortez and P. Rita. A Data-Driven Approach to Predict the Success of Bank Telemarketing. Decision Support Systems, Elsevier, 62:22-31, June 2014
 
 
-Data Source: Federal Reserve Economic Data
+Data Source:UCI Bank Marketing Data Set 
 
-questions: 
-https://www.iaqf.org/dev/files/IAQF%20Competition%20Problem%202017.pdf
-
-papers: 
-
-https://www.iaqf.org/news/news_detail/49
-
-
-Report Edit:
-
-https://www.overleaf.com/1479489434yjxvtpxhnkmf
-
-https://zhuanlan.zhihu.com/p/21659522
+http://archive.ics.uci.edu/ml/datasets/Bank+Marketing
