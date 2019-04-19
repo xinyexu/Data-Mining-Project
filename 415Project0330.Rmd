@@ -1,0 +1,382 @@
+---
+title: '415'
+output: pdf_document
+---
+
+```{r}
+library(dplyr)
+data = read.csv("https://raw.githubusercontent.com/xinyexu/Data-Mining-Project/master/NewDataset/banking.csv")
+# data= data%>%dplyr::select(-day,-month)
+data$y = factor(data$y)
+set.seed(12345)
+
+# Subset of Data Points
+newDataID = sample(1 : nrow(data), size = floor(0.1 * nrow(data)))
+newData <- data[newDataID, ]
+
+# data split into train and test
+set.seed(12345)
+testID <- sample(1:nrow(newData), size = floor(0.2 * nrow(newData)))
+train <- newData[-testID, ]
+test <- newData[testID, ]
+
+# remove illiterate level in 'educataion'
+newData$education = droplevels(newData$education, exclude = if(anyNA(levels(newData$education))) NULL else NA)
+```
+
+As the p-value is pretty small for all cateogrical variabels against y, we reject the null hypothesis that the y is independent of the predictors level.
+```{r}
+# Visualization - Categorical Variable: Chi-square
+# y vs categorical predictors
+library(MASS)       # load the MASS package 
+
+# categorical predictors themselvs
+pred_cat = names(Filter(is.factor, newData))
+chi_pvalue = matrix(0, nrow= length(pred_cat), ncol= length(pred_cat))   
+
+for (ind1 in 1:length(pred_cat)) {
+  for (ind2 in ind1:(length(pred_cat))) {
+    tbl = table(newData[,pred_cat[ind1]], newData[,pred_cat[ind2]])
+    chi2 = chisq.test(tbl, correct=F)
+    chi_pvalue[ind1, ind2] = chi2$p.value
+  }
+}
+show(pred_cat)
+show(chi_pvalue)
+```
+
+shoulld remove loan, as it is independent with y. The blank indicates the small p-value of Chi-square, meaning 
+```{r}
+rownames(chi_pvalue) = pred_cat
+colnames(chi_pvalue) = pred_cat
+require("corrplot")
+corrplot(chi_pvalue, type = "upper")
+```
+
+# obvious categorical 
+```{r}
+library(ggplot2)
+ggplot(newData[,pred_cat], aes(y, ..count..)) + geom_bar(aes(fill = contact), position = "dodge")
+ggplot(newData[,pred_cat], aes(y, ..count..)) + geom_bar(aes(fill = poutcome), position = "dodge")
+```
+
+# erros function for test, train erros and confucsion tables
+```{r}
+# train and test errors function
+erros = function(fitAIC) {
+  # train error
+  pred = predict(fitAIC, train)
+  predProbs = binomial()$linkinv(pred)
+  trainPrediction = rep("0", nrow(train))
+  trainPrediction[predProbs > .5] = "1"
+  train_tab = table(trainPrediction, train$y, dnn = c("Predicted", "Actual"))
+  train_error = round(mean(trainPrediction != train$y), 5)
+
+  # test error
+  pred2 = predict(fitAIC, test)
+  predProbs2 = binomial()$linkinv(pred2)
+  testPrediction = rep("0", nrow(test))
+  testPrediction[predProbs2 > .5] = "1"
+  test_tab = table(testPrediction, test$y, dnn = c("Predicted", "Actual"))
+  test_error = round(mean(testPrediction != test$y), 5)
+  return (list(train_error=train_error, test_error=test_error, 
+               train_tab=train_tab, test_tab=test_tab))
+}
+```
+
+
+## full model
+```{r}
+# remove loan because insignificant Chi square
+train = train%>%dplyr::select(-loan)
+
+y_logistic = glm(y ~., data = train, family = binomial)
+summary(y_logistic)
+
+#next, we will use choose lambda by cross validation
+set.seed(1234)
+X_train = train%>%dplyr::select(-y)
+Y_train = train$y
+cv.out = cv.glmnet(X_train,Y_train,alpha = 0, lambda = grid, nfold = 10)
+plot(cv.out)
+```
+
+
+# backward, forward, stepwise
+```{r}
+# Backwards
+backwards = step(y_logistic, direction='backward') 
+fitbackward = glm(y ~ education + contact + campaign + poutcome + emp_var_rate + cons_price_idx + cons_conf_idx, data = train, family = binomial)
+
+# Forward
+nothing <- glm(y ~ 1,data = train, family=binomial)
+forwards = step(nothing,scope=list(lower=formula(nothing),
+                upper=formula(y_logistic)),direction="forward")
+fitforward = glm(y ~ nr_employed + poutcome + contact + education + cons_conf_idx + campaign, data = train, family = binomial)
+
+# Stepwise
+bothways = step(nothing,list(lower=formula(nothing),upper=formula(y_logistic))                 ,direction="both",trace=0)
+fitsetpwise = glm(y ~ nr_employed + poutcome + contact + education + cons_conf_idx + campaign, data = train, family = binomial)
+
+# show the predictors selcted by three methods
+show(formula(backwards))
+show(formula(forwards))
+show(formula(bothways))
+
+# using erros function
+fitforward_err = erros(fitbackward) 
+fitbackward_err = erros(fitforward) 
+fitstepwise_err = erros(fitsetpwise) 
+show(c(fitforward_err$train_error, fitforward_err$test_error))
+show(c(fitbackward_err$train_error, fitbackward_err$test_error))
+show(c(fitstepwise_err$train_error, fitstepwise_err$test_error))
+```
+
+
+subset selection: select a potentially smaller model, AIC, BIC, 
+```{r}
+library(leaps)
+regfit.best = regsubsets(y~. , data = train, nvmax = ncol(train)-1)
+regfit.Summary = summary(regfit.best) 
+# names(regfit.Summary) find methods under this package
+
+par(mfrow=c(2,2))
+plot(regfit.Summary$rss, xlab="Number of Variables", ylab="RSS",type="l", main = 'RSS')
+
+plot(regfit.Summary$cp, xlab="Number of Variables", ylab="Cp", type='l',
+main = 'Mallows Cp/ AIC')
+best_cp = which.min(regfit.Summary$cp) 
+abline(v=best_cp, lty = 2, col = 'red')
+
+plot(regfit.Summary$bic, xlab="Number of Variables", ylab="BIC", type='l',
+main = 'BIC')
+best_bic = which.min(regfit.Summary$bic) 
+abline(v = best_bic, lty = 2, col = 'red')
+
+plot(regfit.Summary$adjr2, xlab="Number of Variables", ylab="Adjusted RSq",type="l", main = 'Adjusted R-square')
+best_adjr2 = which.max(regfit.Summary$adjr2)
+abline(v=best_adjr2, lty = 2, col = 'red')
+c(best_cp, best_bic, best_adjr2)
+```
+
+# refit the reduced model by AIC, BIC, RSS, Adusted R-square models, 
+
+```{r}
+# optinal modes selected by AIC, BIC, Adj_R-square
+# AIC 
+# regfit.Summary$outmat[13,]
+show(names(which(regfit.Summary$outmat[11,] != ' ')))
+fitAIC = glm(y ~ job + education + housing + contact + poutcome + emp_var_rate + cons_price_idx + cons_conf_idx, data = train, family = binomial)
+
+# BIC 
+show(names(which(regfit.Summary$outmat[7,] != ' ')))
+fitBIC = glm(y~contact + poutcome + emp_var_rate + cons_price_idx + cons_conf_idx, data = train, family = binomial)
+
+# Adjr2
+show(names(which(regfit.Summary$outmat[14,] != ' ')))
+fitAdjr2 = glm(y~job + education + housing + contact + poutcome + emp_var_rate + cons_price_idx + cons_conf_idx, data = train, family = binomial)
+
+```
+
+
+```{r}
+# optinal modes errors selected by AIC, BIC, Adj_R-square
+# using erros function
+# AIC
+fitAIC_err = erros(fitAIC) 
+show(c(fitAIC_err$train_error, fitAIC_err$test_error))
+show(fitAIC_err$train_tab)
+show(fitAIC_err$test_tab)
+
+# BIC 
+fitBIC_err = erros(fitBIC) 
+show(c(fitBIC_err$train_error, fitBIC_err$test_error))
+show(fitBIC_err$train_tab)
+show(fitBIC_err$test_tab)
+
+# Adjr2
+fitAdjr2_err = erros(fitAdjr2) 
+show(c(fitAdjr2_err$train_error, fitAdjr2_err$test_error))
+show(fitAdjr2_err$train_tab)
+show(fitAdjr2_err$test_tab)
+```
+
+```{r}
+
+```
+
+
+
+
+##### ANOTHER HEALTHCARE DATASET
+
+```{r}
+library(dplyr)
+data = read.csv("https://raw.githubusercontent.com/xinyexu/Data-Mining-Project/master/NewDataset/banking.csv")
+
+# reduce 9 categories to 2 variables 
+data =data %>% 
+  mutate(paytype =
+           if_else(paytype == 'Private insurance', 'private_ins', 'non_private_ins'))
+data$sex01 = as.factor(ifelse(data$sex == 'Female', 1, 0))
+data$paytype01 = as.factor(ifelse(data$paytype == 'private_ins', 1, 0))
+
+data$region.Midwest = as.factor(ifelse(data$region == 'Midwest', 1, 0))
+data$region.Northeast = as.factor(ifelse(data$region == 'Northeast', 1, 0))
+data$region.South = as.factor(ifelse(data$region == 'South', 1, 0))
+data$region.West = as.factor(ifelse(data$region == 'West', 1, 0))
+
+
+write.csv(data, "namcs08_final.csv", row.names = FALSE)
+```
+
+# load get dummaries
+```{r}
+data = read.csv("https://raw.githubusercontent.com/xinyexu/Data-Mining-Project/master/namcs08_final.csv")
+```
+
+```{r}
+cor(data[,-c(2,3,4)])
+```
+
+# select train and test
+```{r}
+# keep 'region'! delete 4 regions dummies of region
+diabetes <- -c(2, 4, 18, 19, 25, 26, 27, 28)
+hyperlipid <- -c(2, 4, 17, 19, 25, 26, 27, 28)
+htn <- -c(2, 4, 17, 18, 25, 26, 27, 28)
+set.seed(12345)
+testID <- sample(1:nrow(data), size = trunc(0.2 * nrow(data)))
+```
+
+# logistic: for diabetes (diabetes)
+```{r}
+df <- data[, diabetes]
+df[,c(7:20)] <- data.frame(apply(df[,c(7:20)], 2, as.factor))
+                            
+train <- data[-testID, ]
+test <- dat[testID, ]
+
+diabetes_log = glm(y ~., data = train, family = binomial)
+summary(diabetes_log)
+```
+
+```{r}
+# train error
+pred = predict(diabetes_log, train)
+predProbs = binomial()$linkinv(pred)
+trainPrediction = rep("0", nrow(train))
+trainPrediction[predProbs > .5] = "1"
+table(trainPrediction, train$diabetes, dnn = c("Predicted", "Actual"))
+round(mean(trainPrediction != train$diabetes), 3)
+
+# test error
+pred2 = predict(diabetes_log, test)
+predProbs2 = binomial()$linkinv(pred2)
+testPrediction = rep("0", nrow(test))
+testPrediction[predProbs2 > .5] = "1"
+table(testPrediction, test$diabetes, dnn = c("Predicted", "Actual"))
+round(mean(testPrediction != test$diabetes), 3)
+
+# smaple some train datasets for the following plot
+samp = sample(1:nrow(train), size = trunc(0.05 * nrow(train)))
+# plot points - classes are distinguished by color
+plot(train[samp, 'age'],train[samp, 'weight'], col = c("blue", "green")[train$diabetes], xlab = "age", ylab = "weight", main = "True class vs Predicted class by logistic")
+# add predictions - classes are distinguished by shape
+points(train[samp, 'age'],train[samp, 'weight'], pch = c(2,3)[factor(trainPrediction)])
+legend("bottomright", c("true_diabetes=0","true_diabetes=1", "pred_diabetes=0","pred_diabetes=1"), col=c("blue", "green", "black", "black"), pch=c(1,1,2,3), cex = 0.6)
+```
+subset selection: select a potentially smaller model 
+```{r}
+library(leaps)
+regfit.best = regsubsets(diabetes~. , data = train, nvmax = ncol(train)-1)
+regfit.Summary = summary(regfit.best) 
+# names(regfit.Summary) find methods under this package
+
+par(mfrow=c(2,2))
+plot(regfit.Summary$rss, xlab="Number of Variables", ylab="RSS",type="l", main = 'RSS')
+
+plot(regfit.Summary$cp, xlab="Number of Variables", ylab="Cp", type='l',
+main = 'Mallows Cp/ AIC')
+best_cp = which.min(regfit.Summary$cp) 
+abline(v=best_cp, lty = 2, col = 'red')
+
+plot(regfit.Summary$bic, xlab="Number of Variables", ylab="BIC", type='l',
+main = 'BIC')
+best_bic = which.min(regfit.Summary$bic) 
+abline(v = best_bic, lty = 2, col = 'red')
+
+plot(regfit.Summary$adjr2, xlab="Number of Variables", ylab="Adjusted RSq",type="l", main = 'Adjusted R-square')
+best_adjr2 = which.max(regfit.Summary$adjr2)
+abline(v=best_adjr2, lty = 2, col = 'red')
+c(best_cp, best_bic, best_adjr2)
+```
+
+```{r}
+# select 
+
+regfit.Summary$outmat[13,]
+names(which(regfit.Summary$outmat[13,] != ' '))
+
+# diabetes_log = glm(diabetes ~., data = train, family = binomial)
+
+fitAIC = glm(diabetes~age + height + weight + sbp + dbp + arthritis + cerebvascdz + crf + ihd + obesity + osteoporosis + sex01 + paytype01, data = train, family = binomial)
+# train error
+pred = predict(fitAIC, train)
+predProbs = binomial()$linkinv(pred)
+trainPrediction = rep("0", nrow(train))
+trainPrediction[predProbs > .5] = "1"
+table(trainPrediction, train$diabetes, dnn = c("Predicted", "Actual"))
+round(mean(trainPrediction != train$diabetes), 3)
+
+# test error
+pred2 = predict(fitAIC, test)
+predProbs2 = binomial()$linkinv(pred2)
+testPrediction = rep("0", nrow(test))
+testPrediction[predProbs2 > .5] = "1"
+table(testPrediction, test$diabetes, dnn = c("Predicted", "Actual"))
+round(mean(testPrediction != test$diabetes), 3)
+
+
+
+
+# other BIC and Adjr2
+fitBIC = lm(accept_apps~Private + Apps + Accept + Top25perc + Room.Board + Books,data = train)
+mse(fitBIC$fit, train$accept_apps)
+mse(predict(fitBIC, newdata = test), test$accept_apps)
+
+fitAdjr2 = lm(accept_apps~ . -F.Undergrad - Personal - PhD - S.F.Ratio - Expend, data = train)
+mse(fitAdjr2$fit, train$accept_apps)
+mse(predict(fitAdjr2, newdata = test), test$accept_apps)
+```
+
+
+```{r}
+
+```
+
+cross validation
+```{r}
+set.seed(12345)
+cv.error[1] =  cv.glm(train, lm_AIC_cv5, K=5)$delta[1]
+```
+
+# logistic: for htn (Hypertension)
+```{r}
+data <- data[, hyperlipid]
+
+
+
+
+data_htn = data[,-c('sex')]
+
+```
+
+# logistic: for hyperlipid: 
+```{r}
+data <- data[, htn]
+
+
+
+```
+
